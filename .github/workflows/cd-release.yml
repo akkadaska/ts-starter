@@ -1,0 +1,31 @@
+name: CD (Upload Release Package)
+
+on:
+  release:
+    types: [published]
+jobs:
+  update_release_draft:
+    permissions:
+      contents: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '18.x'
+      - name: Install npm dependency
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Go to dist dir
+        run: cd dist
+      - name: Pack
+        run: zip -r ${{ github.event.repository.name }}.zip ./**/*
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: ${{ github.event.repository.name }}.zip

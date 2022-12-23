@@ -1,0 +1,14 @@
+{
+  "rootDir": "./",
+  "testRegex": ".*\\.spec\\.ts$",
+  "collectCoverageFrom": [
+    "./src/**/*.(t|j)s",
+    "!./src/index.ts",
+    "!**/node_modules/**"
+  ],
+  "coverageDirectory": "./coverage",
+  "testEnvironment": "node",
+  "transform": {
+    "^.+\\.(t|j)sx?$": "@swc/jest"
+  }
+}
